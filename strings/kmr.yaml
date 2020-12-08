@@ -1,0 +1,39 @@
+language: "Kurmancî"
+
+clanguage: "Ziman hilbijîre."
+
+languagec: "Baş e, li vir bi Kurmancî diaxvim."
+
+add_to_chat: "Min tevlî kom bike: https://t.me/{}?startgroup=frompvt"
+
+rules: "
+<b>RÊZIKÊN LÎSTIKÊ</b>\n\n
+
+Lîstik ji alîyê pêşkêşkar û lîstikvanên bê sînor ve hatîye çêkirin. Lîstikvan ji bo ku bersiva rast bibînin têdikoşin.\n\n
+
+Divê pêşkêşkar çi bike? <b>«Dîtina peyvê»</b> divê pêlî vê bişkokê bikin, peyvê bibînin û di nava 5 xulekan de peyvê vebêjin. Heger hûn peyvê neecibînin, hûn dikarin pêlî bişkoka <b>«Guhertina peyvê»</b> bikin û peyvê biguherînin.\n\n
+
+Divê lîstikvan çi bikin? Divê peyva ku pêşkêşkar vegotîye, bibînin. Ji bo vê divê bitenê peyva rast binivîsin.\n\n
+
+Lîstikvanê ku di nava 5 xulekan de peyvê bibêje dê piwanekê bistîne.
+"
+
+game_is_running: "Niha lîstikek heye. 5 xulekan bisekine, paşê jî vêya bişîne:\n/start@{}"
+
+not_your_word: "Ev peyv ne ji bo te ye ❌"
+
+presenter: "{} qala peyvê dike❗️"
+
+view_word: "Dîtina peyvê 🔍"
+
+next_word: "Guhertina peyvê 🔄"
+
+guessed: "{} <b>{}</b> peyva rast bû ✅"
+
+next_game: "Dixwazim bibim pêşkêşkar!"
+
+scores: "<b>PIWANÊN TE</b>\n\n<pre>{}<pre>"
+
+not_admin: "Tu li vir ne birêvebir î 👮🏻"
+
+game_stopped: "Lîstik hat qedandin"
