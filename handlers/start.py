@@ -8,12 +8,8 @@ from helpers import *
 @il
 def start_pvt(update, context, lang):
     update.effective_message.reply_text(
-        _(lang, "add_to_chat").format(context.bot.username), parse_mode="HTML", reply_markup=InlineKeyboardMarkup(
+        _(lang, "add_to_chat").format(context.bot.username), "HTML", True, reply_markup=InlineKeyboardMarkup(
             [
-                [
-                    InlineKeyboardButton(text="➕ Add me to your group ➕",
-                                         url="http://t.me/{botusername}?startgroup=start".format(botusername=context.bot.username))
-                ],
                 [
                     InlineKeyboardButton(
                         text="Join our Channel 🔈", url="http://t.me/su_Bots"),
