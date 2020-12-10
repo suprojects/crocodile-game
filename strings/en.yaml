@@ -35,3 +35,5 @@ next_game: "I want to be the next presenter!"
 scores: "<b>YOUR SCORES</b>\n\n<pre>{}<pre>"
 
 not_admin: "You are not an admin here 👮🏻"
+
+host: "The game is over, the host {} exposed the correct word <b>{}</b>."
