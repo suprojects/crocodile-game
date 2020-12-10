@@ -38,6 +38,7 @@ def message(update, context, lang):
                         )
                     )
                 else:
+                    set_in_game(False, context)
                     msg.reply_text(
                         _(lang, "host").format(
                             f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>',
