@@ -14,7 +14,10 @@ def abort(update, context, lang):
             msg.reply_text(_(lang, "not_admin"))
             return ""
     set_in_game(False, context)
-    msg.reply_text(_(lang, "game_stopped"))
+    msg.reply_text(
+        _(lang, "game_stopped").format(
+            f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>'
+        ), "HTML")
 
 
 __handlers__ = [

@@ -37,3 +37,5 @@ scores: "<b>YOUR SCORES</b>: <pre>{}</pre>"
 not_admin: "You are not an admin here 👮🏻"
 
 host: "The game is over, the host {} exposed the correct word <b>{}</b>."
+
+game_stopped: "{} aborted the game."
