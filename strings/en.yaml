@@ -32,7 +32,7 @@ guessed: "{} <b>{}</b> was correct ✅"
 
 next_game: "I want to be the next presenter!"
 
-scores: "<b>YOUR SCORES</b>\n\n<pre>{}<pre>"
+scores: "<b>YOUR SCORES</b>: <pre>{}<pre>"
 
 not_admin: "You are not an admin here 👮🏻"
 
