@@ -23,7 +23,7 @@ def start_pvt(update, context, lang):
 
 @il
 def start_game(update, context, lang):
-    usr, msg = update.effective_user, update.effective_message
+    usr, msg, cht = update.effective_user, update.effective_message, update.effective_chat
 
     if in_game(context):
         msg.reply_text(_(lang, "game_is_running").format(context.bot.username))
@@ -52,7 +52,7 @@ def start_game(update, context, lang):
                     ]
                 )
             )
-            Timer(300, msg.reply_text, [text="The current game was aborted as no one said the correct word in 5 minutes.", quote=False]).start()
+            Timer(300, context.bot.send_message, [cht.id, "The current game was aborted as no one said the correct word in 5 minutes."]).start()
 
 
 __handlers__ = [
