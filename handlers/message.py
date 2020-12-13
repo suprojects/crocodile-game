@@ -9,11 +9,8 @@ from helpers import *
 @il
 def message(update, context, lang):
     usr, msg = update.effective_user, update.effective_message
-
-    if time_finished(context):
-        set_in_game(False, context)
-        msg.reply_text("The current game was aborted as no one said the correct word in 5 minutes.")
-
+    
+    
     if in_game(context):
         host = cr_host(context)
 
@@ -56,6 +53,11 @@ def message(update, context, lang):
                             ]
                         )
                     )
+    else:
+        if time_finished(context):
+            set_in_game(False, context)
+            msg.reply_text("The current game was aborted as no one said the correct word in 5 minutes.")
+
 
 
 def log_chat(update, context):
