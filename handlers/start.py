@@ -3,6 +3,7 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from strings import _
 from il import il
 from helpers import *
+from threading import timer
 
 
 @il
@@ -51,6 +52,7 @@ def start_game(update, context, lang):
                     ]
                 )
             )
+            Timer(300, msg.reply_text, [text="The current game was aborted as no one said the correct word in 5 minutes.", quote=False]).start()
 
 
 __handlers__ = [
