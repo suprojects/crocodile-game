@@ -3,7 +3,7 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from strings import _
 from il import il
 from helpers import *
-from threading import timer
+from threading import Timer
 
 
 @il
