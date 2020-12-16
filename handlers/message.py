@@ -18,16 +18,17 @@ def message(update, context, lang):
             return ""
         
         host = cr_host(context)
+        word = cr_word(context)
 
         if type(host) != str:
-            if eq(msg.text, cr_word(context)):
+            if eq(msg.text, word):
                 if usr.id != host[0]:
                     add_score(update.effective_chat.id, usr.id, usr.username)
                     stop_game(context)
                     msg.reply_text(
                         _(lang, "guessed").format(
                             f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>',
-                            f'<b>{cr_word(context)}</b>'
+                            f'<b>{word}</b>'
                         ),
                         parse_mode="HTML",
                         reply_markup=InlineKeyboardMarkup(
@@ -45,7 +46,7 @@ def message(update, context, lang):
                     msg.reply_text(
                         _(lang, "host").format(
                             f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>',
-                            f'<b>{cr_word(context)}</b>'
+                            f'<b>{word}</b>'
                         ),
                         parse_mode="HTML",
                         reply_markup=InlineKeyboardMarkup(
