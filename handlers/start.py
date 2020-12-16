@@ -52,8 +52,7 @@ def start_game(update, context, lang):
                     ]
                 )
             )
-            Timer(300, context.bot.send_message, [cht.id, "The current game was aborted as no one said the correct word in 5 minutes."]).start()
-
+            
 
 __handlers__ = [
     [CommandHandler("start", start_pvt, filters=Filters.private)],
