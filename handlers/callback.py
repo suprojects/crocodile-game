@@ -2,7 +2,7 @@ from telegram.ext import CallbackQueryHandler, Filters
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from strings import _
 from il import il
-from helpers import cr_host, set_start_time, cr_word, in_game, set_in_game, set_host, set_word
+from helpers import cr_host, cr_word, in_game, new_game
 from bot import SUDO_USERS
 
 
@@ -22,7 +22,7 @@ def callback(update, context, lang):
         host = cr_host(context)
         if type(host) != str:
             if usr.id == host[0]:
-                set_word(context, lang)
+                new_game(usr, lang, context)
                 query.answer(cr_word(context), show_alert=True)
             else:
                 query.answer(_(lang, "not_your_word"), show_alert=True)
@@ -31,10 +31,7 @@ def callback(update, context, lang):
         query.edit_message_reply_markup(None)
 
         if not in_game(context):
-            set_in_game(True, context)
-            set_start_time(context)
-            set_host([usr.id, usr.full_name], context)
-            set_word(context, lang)
+            new_game(usr, lang, context)
             query.message.reply_text(
                 _(lang, "presenter")
                 .format(f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>'),
