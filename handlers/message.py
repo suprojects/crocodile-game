@@ -3,7 +3,7 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from sql import add_score, add_chat
 from strings import _
 from il import il
-from helpers import *
+from helpers import stop_game, cr_word, cr_host
 
 
 @il
@@ -11,7 +11,9 @@ def message(update, context, lang):
     usr, msg = update.effective_user, update.effective_message
     
     if time_finished(context):
-        set_in_game(False, context)
+        stop_game(False, context)
+        msg.reply_text("The current game was aborted as no one said the correct word in 5 minutes.")
+        return ""
     
     if in_game(context):
         host = cr_host(context)
@@ -20,7 +22,7 @@ def message(update, context, lang):
             if eq(msg.text, cr_word(context)):
                 if usr.id != host[0]:
                     add_score(update.effective_chat.id, usr.id, usr.username)
-                    set_in_game(False, context)
+                    stop_game(context)
                     msg.reply_text(
                         _(lang, "guessed").format(
                             f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>',
@@ -38,7 +40,7 @@ def message(update, context, lang):
                         )
                     )
                 else:
-                    set_in_game(False, context)
+                    stop_game(context)
                     msg.reply_text(
                         _(lang, "host").format(
                             f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>',
