@@ -2,7 +2,7 @@ from telegram.ext import CommandHandler, Filters
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from strings import _
 from il import il
-from helpers import *
+from helpers import new_game, stop_game
 from threading import Timer
 
 
@@ -29,10 +29,7 @@ def start_game(update, context, lang):
         msg.reply_text(_(lang, "game_is_running").format(context.bot.username))
     else:
         if "frompvt" not in msg.text:
-            set_in_game(True, context)
-            set_start_time(context)
-            set_host([usr.id, usr.full_name], context)
-            set_word(context, lang)
+            new_game(usr, lang, context)
             msg.reply_text(
                 _(lang, "presenter")
                 .format(f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>'),
