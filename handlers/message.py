@@ -3,7 +3,7 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from sql import add_score, add_chat
 from strings import _
 from il import il
-from helpers import in_game, stop_game, time_finished, cr_word, cr_host
+from helpers import eq, in_game, stop_game, time_finished, cr_word, cr_host
 
 
 @il
