@@ -10,12 +10,13 @@ from helpers import stop_game, time_finished, cr_word, cr_host
 def message(update, context, lang):
     usr, msg = update.effective_user, update.effective_message
     
-    if time_finished(context):
-        stop_game(False, context)
-        msg.reply_text("The current game was aborted as no one said the correct word in 5 minutes.")
-        return ""
     
     if in_game(context):
+        if time_finished(context):
+            stop_game(False, context)
+            msg.reply_text("The current game was aborted as no one said the correct word in 5 minutes.")
+            return ""
+        
         host = cr_host(context)
 
         if type(host) != str:
