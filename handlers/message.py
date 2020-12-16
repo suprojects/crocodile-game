@@ -13,7 +13,7 @@ def message(update, context, lang):
     
     if in_game(context):
         if time_finished(context):
-            stop_game(False, context)
+            stop_game(context)
             msg.reply_text("The current game was aborted as no one said the correct word in 5 minutes.")
             return ""
         
