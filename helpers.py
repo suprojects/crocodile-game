@@ -11,13 +11,22 @@ def get_word(lang: str) -> str:
     return word
 
 
-def set_in_game(in_game: bool, context) -> bool:
+def new_game(usr, lang, context) -> bool:
     try:
-        context.chat_data["in_game"] = in_game
+        context.chat_data["in_game"] = True
+        context.chat_data["start_time"] = time.time()
+        context.chat_data["word"] = get_word(lang)
+        context.chat_data["host"] = [usr.id, usr.full_name]
         return True
     except:
         return False
 
+def stop_game(context):
+    del context.chat_data["start_time"]
+    del context.chat_data["word"]
+    del context.chat_data["host"]
+    context.chat_data["in_game"] = False
+    
 
 def in_game(context) -> bool:
     return context.chat_data.get("in_game", False)
@@ -32,32 +41,9 @@ def time_finished(context) -> bool:
         return False
 
 
-def set_start_time(context) -> bool:
-    try:
-        context.chat_data["start_time"] = time.time()
-        return True
-    except:
-        return False
-
-
-def set_word(context, lang: str) -> bool:
-    try:
-        context.chat_data["word"] = get_word(lang)
-        return True
-    except:
-        return False
-
 
 def cr_word(context) -> str:
     return context.chat_data.get("word", "NONE")
-
-
-def set_host(host: list, context) -> bool:
-    try:
-        context.chat_data["host"] = host
-        return True
-    except:
-        return False
 
 
 def cr_host(context):
