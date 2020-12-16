@@ -2,7 +2,7 @@ from telegram.ext import CommandHandler, Filters
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from strings import _
 from il import il
-from helpers import new_game, stop_game
+from helpers import new_game
 from threading import Timer
 
 
