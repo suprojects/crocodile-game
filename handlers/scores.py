@@ -1,5 +1,5 @@
 from telegram.ext import CommandHandler
-from sql import get_scores
+from sql.game_sql import get_scores
 from strings import _
 from il import il
 

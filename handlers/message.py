@@ -1,6 +1,6 @@
 from telegram.ext import MessageHandler, Filters
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from sql import add_score, add_chat
+from sql.game_sql import add_score
 from strings import _
 from il import il
 from helpers import eq, in_game, stop_game, time_finished, cr_word, cr_host
@@ -9,14 +9,14 @@ from helpers import eq, in_game, stop_game, time_finished, cr_word, cr_host
 @il
 def message(update, context, lang):
     usr, msg = update.effective_user, update.effective_message
-    
-    
+
     if in_game(context):
         if time_finished(context):
             stop_game(context)
-            msg.reply_text("The current game was aborted as no one said the correct word in 5 minutes.")
+            msg.reply_text(
+                "The current game was aborted as no one said the correct word in 5 minutes.")
             return ""
-        
+
         host = cr_host(context)
         word = cr_word(context)
 
@@ -61,13 +61,6 @@ def message(update, context, lang):
                     )
 
 
-
-def log_chat(update, context):
-    cht = update.effective_chat
-    add_chat(cht.id, cht.title)
-
-
 __handlers__ = [
-    [MessageHandler(Filters.text & ~Filters.command & Filters.group, message)],
-    [MessageHandler(Filters.all & Filters.group, log_chat), 2]
+    [MessageHandler(Filters.text & ~Filters.command & Filters.group, message)]
 ]
