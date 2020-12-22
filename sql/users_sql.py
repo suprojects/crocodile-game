@@ -1,8 +1,6 @@
 import threading
+from sqlalchemy import Column, Integer, UnicodeText, String, func
 
-from sqlalchemy import Column, Integer, UnicodeText, String
-
-from bot import dp
 from sql import BASE, SESSION
 
 
@@ -30,13 +28,6 @@ Users.__table__.create(checkfirst=True)
 Chats.__table__.create(checkfirst=True)
 
 INSERTION_LOCK = threading.RLock()
-
-
-def ensure_bot_in_db():
-    with INSERTION_LOCK:
-        bot = Users(dp.bot.id, dp.bot.username)
-        SESSION.merge(bot)
-        SESSION.commit()
 
 
 def update_user(user_id, username, chat_id=None, chat_name=None):
@@ -98,9 +89,6 @@ def num_users():
         return SESSION.query(Users).count()
     finally:
         SESSION.close()
-
-
-ensure_bot_in_db()
 
 
 def del_user(user_id):
