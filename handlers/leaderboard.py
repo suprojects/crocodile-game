@@ -11,7 +11,7 @@ def leaderboard(update, context):
     max = 1
     arr = []
 
-    for score in all_socres:
+    for score in all_scores:
         if score.scores > max:
             max = socre.scores
             arr.append(score)
