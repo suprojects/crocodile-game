@@ -16,12 +16,12 @@ def leaderboard(update, context):
             max = socre.scores
             arr.append(score)
     msg.reply_text("1st player:"
-    "\nid: {}".format(arr[-1].user_id)
-    "\nuname: {}".format(arr[-1].username)
-    "\nscores: {}".format(arr[-1].scores)
+                   "\nid: {}".format(arr[-1].user_id)
+                   "\nuname: {}".format(arr[-1].username)
+                   "\nscores: {}".format(arr[-1].scores))
 
 
-__handlers__=[
+__handlers__ = [
     [
         CommandHandler(
             "leaderboard",
