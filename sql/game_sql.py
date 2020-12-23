@@ -47,3 +47,10 @@ def get_scores(user_id: int) -> int:
         SESSION.rollback()
         raise
     return False
+
+
+def all_scores():
+    try:
+        return SESSION.query(Scores).all()
+    finally:
+        SESSION.close()
