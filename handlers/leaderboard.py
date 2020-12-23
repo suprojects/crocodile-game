@@ -12,8 +12,8 @@ def leaderboard(update, context):
     arr = []
 
     for score in all_scores:
-        if score.scores > max:
-            max = socre.scores
+        if int(score.scores) > max:
+            max = int(score.scores)
             arr.append(score)
     msg.reply_text(
         "1st player:"
