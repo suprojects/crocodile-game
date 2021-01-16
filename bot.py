@@ -2,7 +2,7 @@ from telegram.ext import Updater, PicklePersistence
 from os import environ
 
 
-TOKEN = "1408658862:AAEa8MHNEE4LsVsGBDCCQvocJ-abotDMfAg"
+TOKEN = "1408658862:AAF0vifsXB2r2OgqndKcDei8alWCNAqKvFg"
 DB_URI = environ.get("DATABASE_URL", "postgres://hwemieye:TXCzli-eCW3gvkUzwK5A3B-i0P4hhe0p@hattie.db.elephantsql.com:5432/hwemieye")
 SUDO_USERS = [
     951435494
