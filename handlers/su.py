@@ -20,7 +20,7 @@ def cleandb(update, context):
         try:
             context.bot.get_chat(chat)
         except BadRequest as excp:
-            if excp.message == "Chat not found":
+            if "kicked" in excp.message:
                 try:
                     sql.del_chat(chat)
                     count += 1
