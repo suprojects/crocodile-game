@@ -63,5 +63,5 @@ def message(update, context, lang):
 
 
 __handlers__ = [
-    [MessageHandler(Filters.text & ~Filters.command & Filters.group, message)]
+    [MessageHandler(Filters.text & ~Filters.command & Filters.chat_type.groups, message)]
 ]

@@ -52,6 +52,6 @@ def start_game(update, context, lang):
             
 
 __handlers__ = [
-    [CommandHandler("start", start_pvt, filters=Filters.private)],
-    [CommandHandler("start", start_game, filters=Filters.group)]
+    [CommandHandler("start", start_pvt, filters=Filters.chat_type.private)],
+    [CommandHandler("start", start_game, filters=Filters.chat_type.groups)]
 ]
