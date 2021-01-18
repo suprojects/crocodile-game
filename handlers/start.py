@@ -15,7 +15,7 @@ def start_pvt(update, context, lang):
                     InlineKeyboardButton(
                         text="Join our Channel 🔈", url="http://t.me/su_Bots"),
                     InlineKeyboardButton(
-                        text="Discussion Group 💬", url="https://t.me/su_BotsChat"),
+                        text="Discussion Group 💬", url="https://t.me/su_Chats"),
                 ]
             ]
         ))
