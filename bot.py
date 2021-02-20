@@ -1,63 +1,66 @@
-from telegram.ext import Updater, PicklePersistence
-from os import environ
+from telegram.ext import Updater, Defaults
 
-
-TOKEN = "1408658862:AAF0vifsXB2r2OgqndKcDei8alWCNAqKvFg"
-DB_URI = environ.get("DATABASE_URL", "postgres://hwemieye:TXCzli-eCW3gvkUzwK5A3B-i0P4hhe0p@hattie.db.elephantsql.com:5432/hwemieye")
-SUDO_USERS = [
-    951435494
-]
+from config import BOT_TOKEN, SUDO_USERS
 
 updater = Updater(
-    TOKEN,
-    use_context=True,
-    persistence=PicklePersistence(filename="data")
+    token=BOT_TOKEN,
+    defaults=Defaults(
+        parse_mode="HTML",
+        disable_web_page_preview=True,
+        quote=False
+    )
 )
+
 dp = updater.dispatcher
 
 
-def main():
-    import sys
+if __name__ == "__main__":
     import os
+    import sys
     from threading import Thread
-    from telegram.ext import CommandHandler, Filters
+
+    from telegram import Update
+    from telegram.ext import CallbackContext, CommandHandler
+
     from handlers import all_handlers
+    from helpers.filters import sudo_only
 
     if "-r" in sys.argv:
-        for SUDO_USER in SUDO_USERS:
-            updater.bot.send_message(SUDO_USER, "Bot restarted successfully.")
+        for user in SUDO_USERS:
+            updater.bot.send_message(user, "Restarted.")
 
-    def stop_and_restart():
+    def stop_and_restart(chat, msg):
         os.system("git pull")
         updater.stop()
-        os.execl(sys.executable, sys.executable, *sys.argv, "-r")
+        os.execl(
+            sys.executable,
+            sys.executable,
+            *sys.argv,
+            "-r",
+            f"{chat}_{msg}"
+        )
 
-    def restart(update, context):
-        update.message.reply_text("Bot is restarting...")
-        Thread(target=stop_and_restart).start()
+    def restart(update: Update, context: CallbackContext):
+        update.effective_message.reply_text("Restarting...")
+        Thread(
+            target=stop_and_restart, args=(
+                update.effective_chat.id,
+                update.effective_message.message_id,
+            )
+        ).start()
 
     for handler in all_handlers:
         if len(handler) == 2:
-            dp.add_handler(
-                handler[0],
-                handler[1]
-            )
+            if handler[1] == "error":
+                dp.add_error_handler(handler[0])
+            else:
+                dp.add_handler(handler[0], handler[1])
         else:
-            dp.add_handler(
-                handler[0]
-            )
+            dp.add_handler(handler[0])
 
     dp.add_handler(
-        CommandHandler(
-            "r",
-            restart,
-            filters=Filters.user(SUDO_USERS)
-        )
+        CommandHandler("r", restart, filters=sudo_only)
     )
 
     updater.start_polling(clean=True)
     updater.idle()
-
-
-if __name__ == "__main__":
-    main()

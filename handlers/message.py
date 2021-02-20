@@ -1,67 +1,36 @@
-from telegram.ext import MessageHandler, Filters
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from sql.game_sql import add_score
-from strings import _
-from il import il
-from helpers import eq, in_game, stop_game, time_finished, cr_word, cr_host
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.ext import CallbackContext, MessageHandler, Filters
+
+from helpers.game import get_game, is_true
 
 
-@il
-def message(update, context, lang):
-    usr, msg = update.effective_user, update.effective_message
+def message(update: Update, context: CallbackContext):
+    try:
+        game = get_game(context)
 
-    if in_game(context):
-        if time_finished(context):
-            stop_game(context)
-            msg.reply_text(
-                "The current game was aborted as no one said the correct word in 5 minutes."
-            )
-            return ""
-
-        host = cr_host(context)
-        word = cr_word(context)
-
-        if type(host) != str:
-            if eq(msg.text, word):
-                if usr.id != host[0]:
-                    add_score(update.effective_chat.id, usr.id, usr.username)
-                    stop_game(context)
-                    msg.reply_text(
-                        _(lang, "guessed").format(
-                            f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>',
-                            f'<b>{word}</b>'
-                        ),
-                        parse_mode="HTML",
-                        reply_markup=InlineKeyboardMarkup(
+        if game["host"].id != update.effective_user.id:
+            if is_true(update.effective_message.text, context):
+                update.effective_message.reply_text(
+                    f"{update.effective_user.mention_html()} guessed the correct word, {game['word']}.",
+                    reply_markup=InlineKeyboardMarkup(
+                        [
                             [
-                                [
-                                    InlineKeyboardButton(
-                                        _(lang, "next_game"),
-                                        callback_data="next_game")
-                                ]
+                                InlineKeyboardButton(
+                                    "I want to be the host",
+                                    callback_data="host")
                             ]
-                        )
+                        ]
                     )
-                else:
-                    stop_game(context)
-                    msg.reply_text(
-                        _(lang, "host").format(
-                            f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>',
-                            f'<b>{word}</b>'
-                        ),
-                        parse_mode="HTML",
-                        reply_markup=InlineKeyboardMarkup(
-                            [
-                                [
-                                    InlineKeyboardButton(
-                                        _(lang, "next_game"),
-                                        callback_data="next_game")
-                                ]
-                            ]
-                        )
-                    )
+                )
+    except:
+        pass
 
 
 __handlers__ = [
-    [MessageHandler(Filters.text & ~Filters.command & Filters.chat_type.groups, message)]
+    [
+        MessageHandler(
+            Filters.text & ~Filters.command & Filters.chat_type.groups,
+            message
+        )
+    ]
 ]

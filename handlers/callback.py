@@ -1,71 +1,66 @@
-from telegram.ext import CallbackQueryHandler, Filters
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from strings import _
-from il import il
-from helpers import cr_host, cr_word, in_game, new_game
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.ext import CallbackQueryHandler, CallbackContext, Filters
+
+from helpers.game import new_game, get_game, next_word
+from helpers.wrappers import nice_errors
 from bot import SUDO_USERS
 
 
-@il
-def callback(update, context, lang):
-    usr, query = update.effective_user, update.callback_query
+@nice_errors
+def view(update: Update, context: CallbackContext):
+    game = get_game(context)
 
-    if query.data == "view_word":
-        host = cr_host(context)
-        if type(host) != str:
-            if usr.id == host[0]:
-                query.answer(cr_word(context), show_alert=True)
-            else:
-                query.answer(_(lang, "not_your_word"), show_alert=True)
+    if game["host"].id == update.effective_user.id:
+        update.callback_query.answer(
+            game["word"],
+            show_alert=True
+        )
+    else:
+        update.callback_query.answer(
+            "This is not for you.", show_alert=True
+        )
 
-    if query.data == "next_word":
-        host = cr_host(context)
-        if type(host) != str:
-            if usr.id == host[0]:
-                new_game(usr, lang, context)
-                query.answer(cr_word(context), show_alert=True)
-            else:
-                query.answer(_(lang, "not_your_word"), show_alert=True)
 
-    if query.data == "next_game":
-        query.edit_message_reply_markup(None)
+@nice_errors
+def next(update: Update, context: CallbackContext):
+    game = get_game(context)
 
-        if not in_game(context):
-            new_game(usr, lang, context)
-            query.message.reply_text(
-                _(lang, "presenter")
-                .format(f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>'),
-                quote=False,
-                parse_mode="HTML",
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton(
-                                _(lang, "view_word"),
-                                callback_data="view_word")],
-                        [
-                            InlineKeyboardButton(
-                                _(lang, "next_word"),
-                                callback_data="next_word")
-                        ]
-                    ]
-                )
-            )
+    if game["host"].id == update.effective_user.id:
+        word = next_word(context)
+        update.callback_query.answer(
+            word,
+            show_alert=True
+        )
+    else:
+        update.callback_query.answer(
+            "This is not for you.", show_alert=True
+        )
 
-    if query.data.startswith("chatlang"):
-        if query.message.chat.type != "private":
-            if query.message.chat.get_member(query.from_user.id).status not in ("creator", "administrator"):
-                if query.from_user.id not in SUDO_USERS:
-                    query.answer(_(lang, "not_admin"),
-                                 show_alert=True)
-                    return
 
-        data = query.data.split("_")
-        selected_lang = data[1]
-        context.chat_data["lang"] = selected_lang
-        query.edit_message_text(_(selected_lang, "languagec"))
+@nice_errors
+def host(update: Update, context: CallbackContext):
+    new_game(update.effective_user, context)
+
+    update.effective_message.reply_text(
+        f"{update.effective_user.mention_html()} talks about a word.",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        "View",
+                        callback_data="view")],
+                [
+                    InlineKeyboardButton(
+                        "Next",
+                        callback_data="next")
+                ]
+            ]
+        )
+    )
 
 
 __handlers__ = [
-    [CallbackQueryHandler(callback)]
+    [CallbackQueryHandler(view, pattern="view")],
+    [CallbackQueryHandler(next, pattern="next")],
+    [CallbackQueryHandler(host, pattern="host")]
 ]

@@ -1,4 +1,2 @@
 python-telegram-bot
-pyaml
-sqlalchemy
-psycopg2
+pymongo

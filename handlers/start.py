@@ -1,57 +1,55 @@
-from telegram.ext import CommandHandler, Filters
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from strings import _
-from il import il
-from helpers import in_game, new_game
-from threading import Timer
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.ext import CallbackContext, CommandHandler, Filters
+
+from helpers.game import new_game
+from helpers.wrappers import nice_errors
 
 
-@il
-def start_pvt(update, context, lang):
-    update.effective_message.reply_text(
-        _(lang, "add_to_chat").format(context.bot.username), "HTML", True, reply_markup=InlineKeyboardMarkup(
-            [
+@nice_errors
+def start(update: Update, context: CallbackContext):
+    if "frompvt" in update.effective_message.text:
+        update.effective_message.reply_text(
+            """
+<b>Thanks for adding me!</b>
+
+You can <b>visit my news channel to get tuned about any update and my discussion group to get help or report a bug</b>.
+            """.format(context.bot.username),
+            reply_markup=InlineKeyboardMarkup(
                 [
-                    InlineKeyboardButton(
-                        text="Join our Channel 🔈", url="http://t.me/su_Bots"),
-                    InlineKeyboardButton(
-                        text="Discussion Group 💬", url="https://t.me/su_Chats"),
-                ]
-            ]
-        ))
-
-
-@il
-def start_game(update, context, lang):
-    usr, msg, cht = update.effective_user, update.effective_message, update.effective_chat
-
-    if in_game(context):
-        msg.reply_text(_(lang, "game_is_running").format(context.bot.username))
-    else:
-        if "frompvt" not in msg.text:
-            new_game(usr, lang, context)
-            msg.reply_text(
-                _(lang, "presenter")
-                .format(f'<a href="tg://user?id={usr.id}">{usr.full_name}</a>'),
-                quote=False,
-                parse_mode="HTML",
-                reply_markup=InlineKeyboardMarkup(
                     [
-                        [
-                            InlineKeyboardButton(
-                                _(lang, "view_word"),
-                                callback_data="view_word")],
-                        [
-                            InlineKeyboardButton(
-                                _(lang, "next_word"),
-                                callback_data="next_word")
-                        ]
+                        InlineKeyboardButton(
+                            text="News", url="http://t.me/su_Bots"
+                        ),
+                    ],
+                    [
+                        InlineKeyboardButton(
+                            text="Discussion", url="https://t.me/su_Chats"
+                        )
                     ]
-                )
+                ]
             )
-            
+        )
+    else:
+        new_game(update.effective_user, context)
+
+        update.effective_message.reply_text(
+            f"{update.effective_user.mention_html()} talks about a word.",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            "View",
+                            callback_data="view")],
+                    [
+                        InlineKeyboardButton(
+                            "Next",
+                            callback_data="next")
+                    ]
+                ]
+            )
+        )
+
 
 __handlers__ = [
-    [CommandHandler("start", start_pvt, filters=Filters.chat_type.private)],
-    [CommandHandler("start", start_game, filters=Filters.chat_type.groups)]
+    [CommandHandler("start", start, filters=Filters.chat_type.groups)]
 ]
