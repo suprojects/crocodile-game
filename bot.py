@@ -7,7 +7,8 @@ updater = Updater(
     defaults=Defaults(
         parse_mode="HTML",
         disable_web_page_preview=True,
-        quote=False
+        quote=False,
+        run_async=True
     )
 )
 
