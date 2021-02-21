@@ -6,7 +6,7 @@ collection = database.chats
 
 
 def get_chat(chat_id: int) -> Union[dict, bool]:
-    return collection.find_one(chat_id) or False
+    return collection.find_one({"chat_id": chat_id}) or False
 
 
 def update_chat(chat_id: int, title: str) -> bool:

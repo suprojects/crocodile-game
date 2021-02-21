@@ -6,7 +6,7 @@ collection = database.users
 
 
 def get_user(user_id: int) -> Union[dict, bool]:
-    return collection.find_one(user_id) or False
+    return collection.find_one({"user_id": user_id}) or False
 
 
 def add_score(user_id: int, firstname: str, username: Union[str, None]) -> bool:

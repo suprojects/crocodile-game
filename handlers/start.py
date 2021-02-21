@@ -53,6 +53,11 @@ You can <b>visit my news channel to get tuned about any update and my discussion
         update_chat(update.effective_chat.id, update.effective_chat.title)
 
 
+def _start(update: Update, context: CallbackContext):
+    update.effective_message.reply_text(".")
+
+
 __handlers__ = [
-    [CommandHandler("start", start, filters=Filters.chat_type.groups)]
+    [CommandHandler("start", start, filters=Filters.chat_type.groups)],
+    [CommandHandler("start", _start, filters=Filters.chat_type.private)]
 ]
