@@ -49,12 +49,14 @@ def host(update: Update, context: CallbackContext):
                 [
                     InlineKeyboardButton(
                         "View",
-                        callback_data="view")
+                        callback_data="view"
+                    )
                 ],
                 [
                     InlineKeyboardButton(
                         "Next",
-                        callback_data="next")
+                        callback_data="next"
+                    )
                 ]
             ]
         )

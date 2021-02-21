@@ -40,7 +40,9 @@ You can <b>visit my news channel to get tuned about any update and my discussion
                     [
                         InlineKeyboardButton(
                             "View",
-                            callback_data="view")],
+                            callback_data="view"
+                        )
+                    ],
                     [
                         InlineKeyboardButton(
                             "Next",
