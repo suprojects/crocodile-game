@@ -61,6 +61,7 @@ def host(update: Update, context: CallbackContext):
     )
 
     db.update(update.effective_chat.id, update.effective_chat.title)
+    update.callback_query.answer()
 
 
 __handlers__ = [
