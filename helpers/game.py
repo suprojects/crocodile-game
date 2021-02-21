@@ -76,6 +76,7 @@ def next_word(context: CallbackContext) -> str:
 @requires_game_running
 def is_true(word: str, context: CallbackContext) -> bool:
     if context.chat_data["game"]["word"] == word.lower():
+        end_game(context)
         return True
     return False
 
