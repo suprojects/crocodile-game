@@ -10,6 +10,7 @@ def get(user_id: int) -> Union[dict, bool]:
 
 
 def update(chat_id: int, user_id: int, firstname: str, username: Union[str, None]) -> bool:
+    chat_id = str(chat_id)
     find = get(user_id)
 
     if not find:
@@ -57,6 +58,7 @@ def total_scores(user_id: int) -> Union[int, bool]:
 
 
 def scores_in_chat(chat_id: int, user_id: int) -> Union[int, bool]:
+    chat_id = str(chat_id)
     user = get(user_id)
 
     if not user:
