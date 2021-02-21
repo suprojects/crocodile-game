@@ -1,6 +1,7 @@
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext, MessageHandler, Filters
 
+from mongo.users import add_score
 from helpers.game import get_game, is_true
 
 
@@ -22,6 +23,13 @@ def message(update: Update, context: CallbackContext):
                         ]
                     )
                 )
+
+                add_score(
+                    update.effective_user.id,
+                    update.effective_user.first_name,
+                    update.effective_user.username
+                )
+
     except:
         pass
 

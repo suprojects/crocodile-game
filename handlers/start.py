@@ -1,6 +1,7 @@
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext, CommandHandler, Filters
 
+from mongo.chats import update_chat
 from helpers.game import new_game
 from helpers.wrappers import nice_errors
 
@@ -48,6 +49,8 @@ You can <b>visit my news channel to get tuned about any update and my discussion
                 ]
             )
         )
+
+        update_chat(update.effective_chat.id, update.effective_chat.title)
 
 
 __handlers__ = [

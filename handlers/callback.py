@@ -1,6 +1,7 @@
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackQueryHandler, CallbackContext, Filters
 
+from mongo.chats import update_chat
 from helpers.game import new_game, get_game, next_word
 from helpers.wrappers import nice_errors
 from bot import SUDO_USERS
@@ -48,7 +49,8 @@ def host(update: Update, context: CallbackContext):
                 [
                     InlineKeyboardButton(
                         "View",
-                        callback_data="view")],
+                        callback_data="view")
+                ],
                 [
                     InlineKeyboardButton(
                         "Next",
@@ -57,6 +59,8 @@ def host(update: Update, context: CallbackContext):
             ]
         )
     )
+
+    update_chat(update.effective_chat.id, update.effective_chat.title)
 
 
 __handlers__ = [

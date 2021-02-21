@@ -3,7 +3,6 @@ from time import time
 from telegram import User
 from telegram.ext import CallbackContext
 
-
 from words import choice
 
 
