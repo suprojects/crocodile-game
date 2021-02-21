@@ -12,11 +12,24 @@ def make_sure_in_game(context: CallbackContext) -> bool:
     if game:
         if (time() - game["start"]) >= 300:
             end_game(context)
-            raise Exception("There is no game is going on.")
+            raise Exception("There is no game going on.")
 
         return True
 
-    raise Exception("There is no game is going on.")
+    raise Exception("There is no game going on.")
+
+
+def make_sure_not_in_game(context: CallbackContext) -> bool:
+    game = context.chat_data.get("game")
+
+    if game:
+        if (time() - game["start"]) >= 300:
+            end_game(context)
+            return True
+
+        raise Exception("There is a game going on.")
+
+    return True
 
 
 def requires_game_running(func):
@@ -31,14 +44,11 @@ def requires_game_running(func):
 
 def requires_game_not_running(func):
     def wrapper(*args, **kwargs):
-        try:
-            context = [
-                item for item in args if isinstance(item, CallbackContext)
-            ][0]
-            make_sure_in_game(context)
-            raise Exception("There is a game going on.")
-        except:
-            return func(*args, **kwargs)
+        context = [
+            item for item in args if isinstance(item, CallbackContext)
+        ][0]
+        make_sure_not_in_game(context)
+        return func(*args, **kwargs)
     return wrapper
 
 
