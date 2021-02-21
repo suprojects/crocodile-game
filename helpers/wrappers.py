@@ -13,7 +13,6 @@ def admin_only(handler: Callable):
 
 def nice_errors(handler: Callable):
     def wrapper(update: Update, context: CallbackContext):
-        return handler(update, context)
         try:
             return handler(update, context)
         except Exception as e:
