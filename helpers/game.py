@@ -80,7 +80,6 @@ def is_true(word: str, context: CallbackContext) -> bool:
     return False
 
 
-@requires_game_running
 def end_game(context: CallbackContext) -> bool:
     if "game" in context.chat_data:
         try:
