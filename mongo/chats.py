@@ -5,12 +5,12 @@ from . import database
 collection = database.chats
 
 
-def get_chat(chat_id: int) -> Union[dict, bool]:
+def get(chat_id: int) -> Union[dict, bool]:
     return collection.find_one({"chat_id": chat_id}) or False
 
 
-def update_chat(chat_id: int, title: str) -> bool:
-    find = get_chat(chat_id)
+def update(chat_id: int, title: str) -> bool:
+    find = get(chat_id)
 
     if not find:
         collection.insert_one(
@@ -27,8 +27,27 @@ def update_chat(chat_id: int, title: str) -> bool:
         {
             "$set": {
                 "title": title,
-                "scores": find["games"] + 1
+                "games": find["games"] + 1
             }
         }
     )
     return True
+
+
+def top_ten() -> Union[list, bool]:
+    find = list(collection.find())
+
+    if not find:
+        return False
+
+    all = []
+
+    for item in find:
+        all.append(
+            {
+                "chat_id": item["chat_id"],
+                "games": item["games"]
+            }
+        )
+
+    return sorted(all, key=lambda x: x["games"])
